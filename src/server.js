@@ -2,12 +2,15 @@ import express from 'express'
 import { sql } from './lib/db.js'
 import transactionsRoute from './routes/transactionsRoute.js'
 import rateLimiter from './middleware/rateLimiter.js'
+import job from './lib/cron.js'
 
 const app = new express()
 
+if (process.env.MODE_ENV === "production") job.start()
 //Middlewares
 app.use(rateLimiter)
 app.use(express.json())
+
 
 const PORT = process.env.PORT || 2000
 
@@ -29,7 +32,7 @@ async function initDB() {
 }
 
 app.get("/health", (req, res) => {
-    res.send("Up and kicking...")
+    res.status(200).json({ Status: "Up and kicking..." })
 })
 
 app.use("/api/transactions", transactionsRoute)
