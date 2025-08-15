@@ -3,11 +3,14 @@ import { sql } from './lib/db.js'
 import transactionsRoute from './routes/transactionsRoute.js'
 import rateLimiter from './middleware/rateLimiter.js'
 import job from './lib/cron.js'
+import cors from 'cors'
 
 const app = new express()
 
+
 if (process.env.MODE_ENV === "production") job.start()
 //Middlewares
+app.use(cors())
 app.use(rateLimiter)
 app.use(express.json())
 
