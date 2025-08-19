@@ -13,6 +13,12 @@ if (process.env.MODE_ENV === "production") job.start()
 app.use(cors())
 app.use(rateLimiter)
 app.use(express.json())
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 
 const PORT = process.env.PORT || 2000
@@ -33,6 +39,7 @@ async function initDB() {
         process.exit(1) // status code 1 means failure, 0 success
     }
 }
+
 
 app.get("/health", (req, res) => {
     res.status(200).json({ Status: "Up and kicking..." })
