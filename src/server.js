@@ -41,7 +41,7 @@ async function initDB() {
 }
 
 
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
     res.status(200).json({ Status: "Up and kicking..." })
 })
 
